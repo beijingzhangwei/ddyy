@@ -1,6 +1,6 @@
 <template>
   <div class="posts">
-    <h1>多多-家园</h1>
+    <h1>多悦-家园</h1>
     <post-list :posts="posts"></post-list>
   </div>
 </template>

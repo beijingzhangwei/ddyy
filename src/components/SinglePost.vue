@@ -3,6 +3,7 @@
   <template v-slot:header>
     <h3>{{postTitle(post)}}</h3>
   </template>
+  <div class="text-wrapper">Say：{{post.post }}</div>
   <template v-slot:footer>
     <base-card v-for="comment in post.comments" :key="comment.id" :expandable="false">
       <template v-slot:header>
@@ -11,12 +12,7 @@
       {{ comment.post }}
     </base-card>
   </template>
-
 </base-card>
-<!--<div class="single-post">-->
-<!--  <h3>{{ postTitle(post)}}</h3>-->
-<!--  <p> {{post.post}}</p>-->
-<!--</div>-->
 </template>
 
 <script>
@@ -33,5 +29,7 @@ export default {
 };
 </script>
 <style>
-
+.text-wrapper {
+  white-space: pre-wrap;
+}
 </style>

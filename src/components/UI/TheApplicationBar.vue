@@ -1,12 +1,7 @@
 <template>
   <div class="app-bar">
     <div class="left-links">
-      <router-link
-          class="app-bar-item"
-          v-for="link in links"
-          :key="link.name"
-          :to="link.to"
-      >
+      <router-link class="app-bar-item" v-for="link in links" :key="link.name" :to="link.to">
         {{ link.name }}
       </router-link>
     </div>
@@ -26,8 +21,8 @@ export default {
           to: { name: "Posts" }
         },
         {
-          name: "About",
-          to: { name: "About" }
+          name: "User",
+          to: { name: "User" }
         }
       ]
     };
