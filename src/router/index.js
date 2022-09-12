@@ -1,8 +1,6 @@
-import Vue from "vue";
-import VueRouter from "vue-router";
-import Posts from "../views/Posts.vue";
+import { createRouter,createWebHashHistory} from "vue-router";
 
-Vue.use(VueRouter);
+import Posts from "@/views/Posts";
 
 const routes = [
     {
@@ -17,13 +15,12 @@ const routes = [
         // this generates a separate chunk (about.[hash].js) for this route
         // which is lazy-loaded when the route is visited.
         component: () =>
-            import(/* webpackChunkName: "about" */ "../views/About.vue")
+            import(/* webpackChunkName: "about" */ "../views/AboutAll.vue")
     }
 ];
 
-const router = new VueRouter({
-    mode: "history",
-    base: process.env.BASE_URL,
+const router = new createRouter({
+    history: createWebHashHistory(),
     routes
 });
 

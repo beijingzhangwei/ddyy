@@ -11,7 +11,7 @@
       </router-link>
     </div>
     <div class="right-links ">
-      <a class="app-bar-item" href="#">LOGIN</a>
+      <a class="app-bar-item" href="https://ddyydy.tk">LOGIN</a>
     </div>
   </div>
 </template>

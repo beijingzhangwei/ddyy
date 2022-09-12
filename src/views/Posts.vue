@@ -1,14 +1,14 @@
 <template>
   <div class="posts">
-    <h1>Posts</h1>
+    <h1>多多-家园</h1>
     <post-list :posts="posts"></post-list>
   </div>
 </template>
 
 <script>
-import PostList from "../components/PostList.vue";
+import PostList from "@/components/PostList";
 export default {
-  name: "Posts",
+  name: "论坛-多多",
   components: {
     PostList
   },

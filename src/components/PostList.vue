@@ -1,8 +1,7 @@
 <template>
   <div class="post-list">
-    <signle-post v-for="post in posts" :key="post.id" :post="post">
-
-    </signle-post>
+    <single-post v-for="post in posts" :key="post.id" :post="post">
+    </single-post>
   </div>
 </template>
 
