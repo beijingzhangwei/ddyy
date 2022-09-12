@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import TheApplicationBar from "./components/UI/TheApplicationBar.vue";
+import TheApplicationBar from "@/components/UI/TheApplicationBar";
 export default {
   components: {
     TheApplicationBar
