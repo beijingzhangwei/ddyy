@@ -1,21 +1,41 @@
 import { createRouter, createWebHashHistory} from "vue-router";
 
 import Posts from "@/views/Posts";
+import Login from "@/views/Login";
+import UserAbout from "@/views/User";
+
+import store from "@/store";
 
 const routes = [
     {
         path: "/",
         name: "Posts",
         component: Posts
+    },{
+        path: "/user/:userid",
+        name: "User",
+        component: UserAbout,
+        props: true,
+        beforeEnter: (to, from, next) => {
+            if (!store.getters["auth/isLoggedIn"]) {
+                next({ name: "Login" });
+            } else {
+                next();
+            }
+        }
     },
     {
-        path: "/user",
-        name: "User",
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import("../views/UserAbout.vue"),
-        props: true
+        path: "/login",
+        name: "Login",
+        component: Login,
+        //This is not needed right by now, because the store is  refreshed on page refresh... Will be needed!
+        beforeEnter: (to, from, next) => {
+            if (store.getters["auth/isLoggedIn"]) {
+                next({ name: "Posts" });
+            } else {
+                next();
+            }
+        }
     }
 ];
 

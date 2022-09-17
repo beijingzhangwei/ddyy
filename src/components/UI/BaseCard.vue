@@ -1,14 +1,19 @@
 <template>
-<div>
-  <header v-if="$slots.header">
-    <slot name="header"></slot>
-  </header>
-  <slot></slot>
-  <footer v-if="$slots.footer && expandable">
-    <a href="#" @click.prevent="toggleDetails" class="footer-elements"> {{ messageValue }}</a>
-    <slot name="footer" v-if="expanded"></slot>
-  </footer>
-</div>
+  <div class="box-div">
+    <header v-if="$slots.header">
+      <slot name="header"> </slot>
+    </header>
+    <slot></slot>
+    <footer v-if="$slots.footer && expandable">
+      <a href="#" @click.prevent="toggleDetails" class="footer-elements">{{
+          messageValue
+        }}</a>
+      <slot name="footer" v-if="expanded"></slot>
+    </footer>
+    <div class="actions">
+      <slot name="actions"></slot>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -36,7 +41,6 @@ export default {
     }
   }
 };
-
 </script>
 
 <style scoped>
@@ -53,9 +57,9 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: brown;
+  color: firebrick;
 }
-div {
+div .box-div {
   margin: 2rem auto;
   max-width: 50rem;
   border-radius: 12px;
@@ -64,5 +68,8 @@ div {
 }
 footer {
   padding: 1rem;
+}
+.actions {
+  margin: 2rem auto;
 }
 </style>

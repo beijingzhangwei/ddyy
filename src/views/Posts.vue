@@ -1,57 +1,38 @@
 <template>
   <div class="posts">
     <h1>多悦-家园</h1>
-    <post-list :posts="posts"></post-list>
+    <add-text-form textRequest="Add Post" v-if="loggedIn" :showLabel="true" @text-added="addPost"></add-text-form>
+    <post-list :posts="posts" title="" ></post-list>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 import PostList from "@/components/PostList";
+import AddTextForm from "@/components/AddTextForm";
 export default {
-  name: "论坛-多多",
+  name: "论坛多多",
   components: {
-    PostList
+    PostList,
+    AddTextForm
   },
-  data: function() {
-    return {
-      posts: [
-        {
-          id: 1,
-          user: "idalmasso",
-          date: "2021-01-19 15:30:30",
-          post:
-              "Today I'm feeling sooooo well. I will GO to see a nice Vue!!! (LOL)",
-          comments: [
-            {
-              id: 3,
-              user: "Nostradamus",
-              date: "2021-01-20 20:30:34",
-              post: "LOL"
-            },
-            {
-              id: 4,
-              user: "FinnishMan",
-              date: "2021-01-20 20:30:34",
-              post: "Please..."
-            }
-          ]
-        },
-        {
-          id: 2,
-          user: "cshannon",
-          date: "2021-01-19 15:25:20",
-          post: "I think that someone make some really   bad puns...",
-          comments: [
-            {
-              id: 3,
-              user: "Nostradamus",
-              date: "2021-01-20 20:30:34",
-              post: "LOL"
-            },
-          ]
-        }
-      ]
-    };
+  computed: {
+    ...mapGetters({ loggedIn: "auth/isLoggedIn" }),
+    posts() {
+      return this.$store.getters["posts/allPosts"];
+    }
+  },
+  methods: {
+    addPost(text) {
+      this.$store.dispatch("posts/addPost", {
+        username: this.$store.getters["auth/currentUser"].userid,
+        post: text
+      });
+    }
+  },
+  mounted() {
+    this.$store.dispatch("posts/getAllPosts");
   }
 };
 </script>

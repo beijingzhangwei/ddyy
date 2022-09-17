@@ -1,31 +1,59 @@
 <template>
   <div class="app-bar">
     <div class="left-links">
-      <router-link class="app-bar-item" v-for="link in links" :key="link.name" :to="link.to">
+      <router-link v-for="link in activeLinks" :key="link.name" :to="link.to" class="app-bar-item">
         {{ link.name }}
       </router-link>
     </div>
     <div class="right-links ">
-      <a class="app-bar-item" href="https://ddyydy.tk">LOGIN</a>
+      <router-link class="app-bar-item" href="#" v-if="!loggedIn" @click.prevent :to="{ name: 'Login' }">LOGIN</router-link>
+      <a class="app-bar-item" href="#" v-if="loggedIn" @click.prevent="logoutButtonClicked">LOGOUT</a>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions, mapGetters } from "vuex";
 export default {
   data() {
     return {
       links: [
         {
+          visibleIfLoggedOut: true,
           name: "Posts",
-          to: { name: "Posts" }
+          to: {name: "Posts"}
         },
         {
+          visibleIfLoggedOut: false,
           name: "User",
-          to: { name: "User" }
+          to: {
+            name: "User",
+            params: {
+              userid: this.$store.getters["auth/currentUser"].username
+            }
+          }
         }
       ]
     };
+  },
+  methods: {
+    ...mapActions({
+      login: "auth/login", // map `this.login()` to `this.$store.dispatch('auth/login')`
+      logout: "auth/logout"
+    }),
+    logoutButtonClicked() {
+      this.logout().then(() => {
+        this.$router.push({name: "Login"});
+      });
+    }
+  },
+  computed: {
+    ...mapGetters({loggedIn: "auth/isLoggedIn"}),
+    activeLinks() {
+      return this.links.filter(
+          link => link.visibleIfLoggedOut || this.loggedIn
+      );
+    }
   }
 };
 </script>
