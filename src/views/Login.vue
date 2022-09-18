@@ -74,10 +74,10 @@ export default {
 <style scoped>
 button {
   margin-top: 1rem;
-  width: 20rem;
-  height: 5rem;
-  border-radius: 8px;
-  background-color: darksalmon;
-  padding: 8px;
+  width: 5rem;
+  height: 2rem;
+  border-radius: 3px;
+  background-color: #bb4b8f;
+  padding: 5px;
 }
 </style>

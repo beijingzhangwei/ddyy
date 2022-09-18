@@ -40,7 +40,7 @@ export default {
     actions: {
         async addPost(context, post) {
             // console.log(JSON.stringify(post));
-            fetch("http://localhost:3000/api/posts", {
+            fetch("http://144.168.63.73:3000/api/posts", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -62,7 +62,7 @@ export default {
                 });
         },
         async deletePost(context, {post}) {
-            fetch("http://localhost:3000/api/posts/" + post.id, {
+            fetch("http://144.168.63.73:3000/api/posts/" + post.id, {
                 headers: {
                     "Content-Type": "application/json",
                     Authorization: context.rootGetters["auth/getTokenHeader"]
@@ -82,7 +82,7 @@ export default {
                 });
         },
         async addComment(context, { postId, comment }) {
-            fetch("http://localhost:3000/api/posts/" + postId + "/comments", {
+            fetch("http://144.168.63.73:3000/api/posts/" + postId + "/comments", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -103,7 +103,7 @@ export default {
                 });
         },
         async getAllPosts(context) {
-            fetch("http://localhost:3000/api/posts")
+            fetch("http://144.168.63.73:3000/api/posts")
                 .then(response => {
                     if (response.ok) {
                         return response.json();
