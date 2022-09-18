@@ -17,8 +17,9 @@ export default {
     },
     actions: {
         async addUser(context, {username}) {
-            return fetch("http://144.168.63.73:3000/api/users/" + username, {
+            return fetch("https://ddyydy.tk/ddyy-b/api/users/" + username, {
                 headers: {
+                    // "Referrer-Policy": "unsafe-url",
                     Authorization: context.rootGetters["auth/getTokenHeader"]
                 }
             })

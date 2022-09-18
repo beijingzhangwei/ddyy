@@ -40,11 +40,12 @@ export default {
     actions: {
         async addPost(context, post) {
             // console.log(JSON.stringify(post));
-            fetch("http://144.168.63.73:3000/api/posts", {
+            fetch("https://ddyydy.tk/ddyy-b/api/posts", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    Authorization: context.rootGetters["auth/getTokenHeader"]
+                    "Referrer-Policy": "unsafe-url",
+                     Authorization: context.rootGetters["auth/getTokenHeader"]
                 },
                 body: JSON.stringify(post)
             })
@@ -62,9 +63,10 @@ export default {
                 });
         },
         async deletePost(context, {post}) {
-            fetch("http://144.168.63.73:3000/api/posts/" + post.id, {
+            fetch("https://ddyydy.tk/ddyy-b/api/posts/" + post.id, {
                 headers: {
                     "Content-Type": "application/json",
+                    "Referrer-Policy": "unsafe-url",
                     Authorization: context.rootGetters["auth/getTokenHeader"]
                 },
                 method: "DELETE"
@@ -82,10 +84,11 @@ export default {
                 });
         },
         async addComment(context, { postId, comment }) {
-            fetch("http://144.168.63.73:3000/api/posts/" + postId + "/comments", {
+            fetch("https://ddyydy.tk/ddyy-b/api/posts/" + postId + "/comments", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    "Referrer-Policy": "unsafe-url",
                     Authorization: context.rootGetters["auth/getTokenHeader"]
                 },
                 body: JSON.stringify(comment)
@@ -103,7 +106,7 @@ export default {
                 });
         },
         async getAllPosts(context) {
-            fetch("http://144.168.63.73:3000/api/posts")
+            fetch("https://ddyydy.tk/ddyy-b/api/posts", {headers: {"Referrer-Policy": "unsafe-url"}})
                 .then(response => {
                     if (response.ok) {
                         return response.json();

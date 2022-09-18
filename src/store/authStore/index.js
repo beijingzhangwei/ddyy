@@ -21,8 +21,9 @@ export default {
     },
     actions: {
         async login(context, {username, password}) {
-            return fetch("http://144.168.63.73:3000/api/auth/login", {
+            return fetch("https://ddyydy.tk/ddyy-b/api/auth/login", {
                 method: "POST",
+                "Referrer-Policy": "unsafe-url",
                 body: JSON.stringify({
                     username: username,
                     password: password
@@ -45,8 +46,9 @@ export default {
             context.commit("LOGOUT");
         },
         async signup(context, { username, password }) {
-            return fetch("http://144.168.63.73:3000/api/auth/create-user", {
+            return fetch("https://ddyydy.tk/ddyy-b/api/auth/create-user", {
                 method: "POST",
+                "Referrer-Policy": "unsafe-url",
                 body: JSON.stringify(
                     { username: username, password: password })
             }).then(response => {
