@@ -1,18 +1,11 @@
 export default {
     namespaced: true,
     state: {
-        loadedUsers: [
-            {
-                id: 1,
-                username: "duoduo",
-                description: "Here is the description",
-                //here there will be the logic for auth and so on...
-                loggedIn: false
-            }
-        ]
+        loadedUsers: []
     },
     mutations: {
         ADD_USER(state, user) {
+            // 新的user overwrite 历史存储 by username
             if (state.loadedUsers.some(u => u.username == user.username)) {
                 state.loadedUsers.splice(
                     state.loadedUsers.indexOf(u => u.username == user.username),
@@ -22,13 +15,31 @@ export default {
             state.loadedUsers.push(user);
         }
     },
-    actions: {},
+    actions: {
+        async addUser(context, {username}) {
+            return fetch("http://localhost:3000/api/users/" + username, {
+                headers: {
+                    Authorization: context.rootGetters["auth/getTokenHeader"]
+                }
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error("Cannot get user");
+                    return response.json();
+                })
+                .then(data => {
+                    context.commit("ADD_USER", data);
+                })
+                .catch(error => {
+                    console.log(error);
+                    throw error;
+                });
+        }
+    },
     getters: {
-        getUser: state => userid => {
-
-            if (state.loadedUsers.some(user => user.username == userid)) {
-                console.log(state.loadedUsers.find(user => user.username == userid));
-                return state.loadedUsers.find(user => user.username == userid);
+        getUser: state => username => {
+            if (state.loadedUsers.some(user => user.username == username)) {
+                console.log(state.loadedUsers.find(user => user.username == username));
+                return state.loadedUsers.find(user => user.username == username);
             } else {
                 //Here I'll have to request from the server!!
                 return {};

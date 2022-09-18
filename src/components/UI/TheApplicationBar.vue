@@ -6,8 +6,8 @@
       </router-link>
     </div>
     <div class="right-links ">
-      <router-link class="app-bar-item" href="#" v-if="!loggedIn" @click.prevent :to="{ name: 'Login' }">LOGIN</router-link>
-      <a class="app-bar-item" href="#" v-if="loggedIn" @click.prevent="logoutButtonClicked">LOGOUT</a>
+      <router-link class="app-bar-item" href="#" v-if="!loggedIn" @click.prevent :to="{ name: 'Login' }">登录</router-link>
+      <a class="app-bar-item" href="#" v-if="loggedIn" @click.prevent="logoutButtonClicked">退出</a>
     </div>
   </div>
 </template>
@@ -15,27 +15,6 @@
 <script>
 import { mapActions, mapGetters } from "vuex";
 export default {
-  data() {
-    return {
-      links: [
-        {
-          visibleIfLoggedOut: true,
-          name: "Posts",
-          to: {name: "Posts"}
-        },
-        {
-          visibleIfLoggedOut: false,
-          name: "User",
-          to: {
-            name: "User",
-            params: {
-              userid: this.$store.getters["auth/currentUser"].username
-            }
-          }
-        }
-      ]
-    };
-  },
   methods: {
     ...mapActions({
       login: "auth/login", // map `this.login()` to `this.$store.dispatch('auth/login')`
@@ -49,6 +28,32 @@ export default {
   },
   computed: {
     ...mapGetters({loggedIn: "auth/isLoggedIn"}),
+    links() {
+      return [
+        {
+          visibleIfLoggedOut: true,
+          name: "博文",
+          to: { name: "Posts" }
+        },
+        {
+          visibleIfLoggedOut: false,
+          name: "我的",
+          to: {
+            name: "User",
+            params: {
+              username: this.currentUser
+            }
+          }
+        }
+      ];
+    },
+    currentUser() {
+      const user = this.$store.getters["auth/currentUser"];
+      if (user) {
+        return user.username;
+      }
+      return "";
+    },
     activeLinks() {
       return this.links.filter(
           link => link.visibleIfLoggedOut || this.loggedIn

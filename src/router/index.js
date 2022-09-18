@@ -2,7 +2,7 @@ import { createRouter, createWebHashHistory} from "vue-router";
 
 import Posts from "@/views/Posts";
 import Login from "@/views/Login";
-import UserAbout from "@/views/User";
+import User from "@/views/User";
 
 import store from "@/store";
 
@@ -12,9 +12,9 @@ const routes = [
         name: "Posts",
         component: Posts
     },{
-        path: "/user/:userid",
+        path: "/user/:username",
         name: "User",
-        component: UserAbout,
+        component: User,
         props: true,
         beforeEnter: (to, from, next) => {
             if (!store.getters["auth/isLoggedIn"]) {

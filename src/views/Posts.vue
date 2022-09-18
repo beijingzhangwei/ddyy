@@ -25,8 +25,9 @@ export default {
   },
   methods: {
     addPost(text) {
+      console.log("------$$$$$$$$####",this.$store.getters["auth/currentUser"].username);
       this.$store.dispatch("posts/addPost", {
-        username: this.$store.getters["auth/currentUser"].userid,
+        username: this.$store.getters["auth/currentUser"].username,
         post: text
       });
     }

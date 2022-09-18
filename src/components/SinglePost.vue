@@ -4,7 +4,8 @@
     <h3>
      <router-link :to="linkUser(post.username)">{{postTitle(post) }}</router-link>
     </h3>
-    <button class="delete-button" @click.prevent="deletePost">Delete</button>
+    <button v-if="loggedIn && currentUser.username === post.username" class="delete-button"
+            @click.prevent="deletePost">Delete</button>
   </template>
   <div class="text-wrapper">Say：{{post.post }}</div>
   <template v-slot:footer>
@@ -45,7 +46,7 @@ export default {
       return {
         name: "User",
         params: {
-          userid: username
+          username: username
         }
       };
     },
@@ -53,7 +54,7 @@ export default {
       this.$store.dispatch("posts/addComment", {
         postId: post.id,
         comment: {
-          username: this.currentUser.userid,
+          username: this.currentUser.username,
           post: text
         }
       });

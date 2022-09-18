@@ -36,29 +36,16 @@ export default {
             const oldPost = state.posts.find(post => post.id == postId);
             oldPost.comments = post.comments;
         },
-        // ADD_COMMENT(state, { postId, comment }) {
-        //     const post = state.posts.find(post => post.id === postId);
-        //     if (post.comments.length < 1) {
-        //         comment.id = 1;
-        //     } else {
-        //         const max = post.comments.reduce((prev, current) =>
-        //             prev.id > current.id ? prev : current
-        //         );
-        //         comment.id = max.id + 1;
-        //     }
-        //     post.comments.push(comment);
-        // }
     },
     actions: {
-        // async addPost(context, post) {
-        //     post.date = getFormattedDate();
-        //     context.commit("ADD_POST", post);
-        // },
         async addPost(context, post) {
             // console.log(JSON.stringify(post));
             fetch("http://localhost:3000/api/posts", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: context.rootGetters["auth/getTokenHeader"]
+                },
                 body: JSON.stringify(post)
             })
                 .then(response => {
@@ -74,12 +61,12 @@ export default {
                     console.log(error);
                 });
         },
-        // async deletePost(context, id) {
-        //     context.commit("DELETE_POST", id);
-        // },
-
         async deletePost(context, {post}) {
             fetch("http://localhost:3000/api/posts/" + post.id, {
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: context.rootGetters["auth/getTokenHeader"]
+                },
                 method: "DELETE"
             })
                 .then(response => {
@@ -94,15 +81,12 @@ export default {
                     console.log(error);
                 });
         },
-        // async addComment(context, { postId, comment }) {
-        //     comment.date = getFormattedDate();
-        //     context.commit("ADD_COMMENT", { postId, comment });
-        // }
         async addComment(context, { postId, comment }) {
             fetch("http://localhost:3000/api/posts/" + postId + "/comments", {
                 method: "POST",
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    Authorization: context.rootGetters["auth/getTokenHeader"]
                 },
                 body: JSON.stringify(comment)
             })
@@ -119,7 +103,6 @@ export default {
                 });
         },
         async getAllPosts(context) {
-            // console.log(JSON.stringify(post));
             fetch("http://localhost:3000/api/posts")
                 .then(response => {
                     if (response.ok) {
@@ -141,8 +124,8 @@ export default {
         allPosts(state) {
             return state.posts;
         },
-        userPosts: state => user => {
-            return state.posts.filter(post => post.user === user);
+        userPosts: state => username => {
+            return state.posts.filter(post => post.username === username);
         }
     }
 };
