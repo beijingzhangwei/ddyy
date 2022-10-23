@@ -17,7 +17,7 @@ export default {
     },
     actions: {
         async addUser(context, {user_id}) {
-            return fetch("http://localhost:3000/api/users/" + user_id, {
+            return fetch("https://ddyydy.tk/ddyy-b/api/users/" + user_id, {
                 headers: {
                     Authorization: context.rootGetters["auth/getTokenHeader"]
                 }

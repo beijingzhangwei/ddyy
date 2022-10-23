@@ -24,7 +24,7 @@ export default {
     },
     actions: {
         async login(context, {email, password}) {
-            return fetch("http://localhost:3000/api/auth/login", {
+            return fetch("https://ddyydy.tk/ddyy-b/api/auth/login", {
                 method: "POST",
                 body: JSON.stringify({
                     email   : email,
@@ -48,7 +48,7 @@ export default {
             context.commit("LOGOUT");
         },
         async signup(context, { email, password }) {
-            return fetch("http://localhost:3000/api/auth/create-user", {
+            return fetch("https://ddyydy.tk/ddyy-b/api/auth/create-user", {
                 method: "POST",
                 body: JSON.stringify(
                     { email: email, password: password , nickname: "nick:" + new Date().getTime(), description: "des："+ new Date().getTime()})

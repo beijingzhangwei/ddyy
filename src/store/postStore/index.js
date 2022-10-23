@@ -50,7 +50,7 @@ export default {
     actions: {
         async addPost(context, post) {
             // console.log(JSON.stringify(post));
-            fetch("http://localhost:3000/api/posts", {
+            fetch("https://ddyydy.tk/ddyy-b/api/posts", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -72,7 +72,7 @@ export default {
                 });
         },
         async deletePost(context, {post}) {
-            fetch("http://localhost:3000/api/posts/" + post.post_id, {
+            fetch("https://ddyydy.tk/ddyy-b/api/posts/" + post.post_id, {
                 headers: {
                     "Content-Type": "application/json",
                     // 鉴权请求需要携带token 去请求
@@ -93,7 +93,7 @@ export default {
                 });
         },
         async addComment(context, { postId, comment }) {
-            fetch("http://localhost:3000/api/posts/" + postId + "/comments", {
+            fetch("https://ddyydy.tk/ddyy-b/api/posts/" + postId + "/comments", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -114,7 +114,7 @@ export default {
                 });
         },
         async getAllPosts(context) {
-            fetch("http://localhost:3000/api/posts")
+            fetch("https://ddyydy.tk/ddyy-b/api/posts")
                 .then(response => {
                     if (response.ok) {
                         return response.json();
@@ -131,7 +131,7 @@ export default {
                 });
         },
         async getAllPostsByUserId(context, {user_id}) {
-            fetch("http://localhost:3000/api/one_user_posts/" + user_id, {
+            fetch("https://ddyydy.tk/ddyy-b/api/one_user_posts/" + user_id, {
                 method: "GET",
             })
                 .then(response => {
@@ -150,7 +150,7 @@ export default {
                 });
         },
         async deleteComment(context, {comment}) {
-            fetch("http://localhost:3000/api/comments/" + comment.comment_id + "/del", {
+            fetch("https://ddyydy.tk/ddyy-b/api/comments/" + comment.comment_id + "/del", {
                 headers: {
                     "Content-Type": "application/json",
                     // 鉴权请求需要携带token 去请求
