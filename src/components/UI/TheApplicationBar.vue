@@ -41,7 +41,7 @@ export default {
           to: {
             name: "User",
             params: {
-              username: this.currentUser
+              email: this.currentUser
             }
           }
         }
@@ -50,7 +50,7 @@ export default {
     currentUser() {
       const user = this.$store.getters["auth/currentUser"];
       if (user) {
-        return user.username;
+        return user.email;
       }
       return "";
     },

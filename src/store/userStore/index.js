@@ -6,9 +6,9 @@ export default {
     mutations: {
         ADD_USER(state, user) {
             // 新的user overwrite 历史存储 by username
-            if (state.loadedUsers.some(u => u.username == user.username)) {
+            if (state.loadedUsers.some(u => u.email == user.email)) {
                 state.loadedUsers.splice(
-                    state.loadedUsers.indexOf(u => u.username == user.username),
+                    state.loadedUsers.indexOf(u => u.email == user.email),
                     1
                 );
             }
@@ -16,8 +16,8 @@ export default {
         }
     },
     actions: {
-        async addUser(context, {username}) {
-            return fetch("http://localhost:3000/api/users/" + username, {
+        async addUser(context, {user_id}) {
+            return fetch("http://localhost:3000/api/users/" + user_id, {
                 headers: {
                     Authorization: context.rootGetters["auth/getTokenHeader"]
                 }
@@ -36,10 +36,10 @@ export default {
         }
     },
     getters: {
-        getUser: state => username => {
-            if (state.loadedUsers.some(user => user.username == username)) {
-                console.log(state.loadedUsers.find(user => user.username == username));
-                return state.loadedUsers.find(user => user.username == username);
+        getUser: state => email => {
+            if (state.loadedUsers.some(user => user.email == email)) {
+                console.log(state.loadedUsers.find(user => user.email == email));
+                return state.loadedUsers.find(user => user.email == email);
             } else {
                 //Here I'll have to request from the server!!
                 return {};

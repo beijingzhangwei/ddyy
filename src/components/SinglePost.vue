@@ -2,20 +2,23 @@
 <base-card :expandable="post.comments && post.comments.length > 0">
   <template v-slot:header>
     <h3>
-     <router-link :to="linkUser(post.username)">{{postTitle(post) }}</router-link>
+      <!--      NOTE 页面路由设置的站位符号，需要完全匹配-->
+     <router-link :to="linkUser(post.post_author.email)">{{postTitle(post) }}</router-link>
     </h3>
-    <button v-if="loggedIn && currentUser.username === post.username" class="delete-button"
+    <button v-if="loggedIn && currentUser.email === post.post_author.email" class="delete-button"
             @click.prevent="deletePost">Delete</button>
   </template>
-  <div class="text-wrapper">Say：{{post.post }}</div>
+  <div class="text-wrapper">Say：{{post.content }}</div>
   <template v-slot:footer>
-    <base-card v-for="comment in post.comments" :key="comment.id" :expandable="false">
+    <base-card v-for="comment in post.comments" :key="comment.comment_id" :expandable="false">
       <template v-slot:header>
         <h3>
-          <router-link :to="linkUser(comment.username)">{{postTitle(comment)}}</router-link>
+          <router-link :to="linkUser(comment.comment_author.email)">{{commentTitle(comment)}}</router-link>
         </h3>
+        <button v-if="loggedIn && (currentUser.email === post.post_author.email || currentUser.email === comment.comment_author.email) " class="delete-button"
+                @click.prevent="deleteComment(comment)">Delete</button>
       </template>
-      {{ comment.post }}
+      {{ comment.content }}
     </base-card>
   </template>
   <template v-if="loggedIn" v-slot:actions>
@@ -40,27 +43,35 @@ export default {
   },
   methods: {
     postTitle(post) {
-      return post.username + "@" + post.date;
+      return post.post_author.email + "  发布于" + post.created_at;
     },
-    linkUser(username) {
+    commentTitle(comment) {
+      return comment.comment_author.email + "  点评于" + comment.created_at;
+    },
+    linkUser(email) {
       return {
         name: "User",
         params: {
-          username: username
+          email: email
         }
       };
     },
     addComment(text, post) {
       this.$store.dispatch("posts/addComment", {
-        postId: post.id,
+        postId: post.post_id,
         comment: {
-          username: this.currentUser.username,
-          post: text
+          post_id: post.post_id,
+          email: this.currentUser.email,
+          author_id: this.currentUser.user_id,
+          content: text
         }
       });
     },
     deletePost() {
       this.$store.dispatch("posts/deletePost", {post: this.post});
+    },
+    deleteComment(comment) {
+      this.$store.dispatch("posts/deleteComment", {comment: comment});
     }
   }
 };

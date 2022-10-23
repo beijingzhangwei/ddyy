@@ -2,29 +2,32 @@ export default {
     namespaced: true,
     state: {
         user: {
-            username: "",
+            email: "",
             loggedIn: false,
-            token: ""
+            token: "",
+            user_id: 0,
         }
     },
     mutations: {
-        LOGIN(state, { username, token }) {
+        LOGIN(state, { email, token , user_id}) {
             state.user.loggedIn = true;
-            state.user.username = username;
+            state.user.email = email;
             state.user.token = token;
+            state.user.user_id = user_id;
         },
         LOGOUT(state) {
             state.user.loggedIn = false;
-            state.user.username = "";
+            state.user.email = "";
             state.user.token = "";
+            state.user.user_id = "";
         }
     },
     actions: {
-        async login(context, {username, password}) {
+        async login(context, {email, password}) {
             return fetch("http://localhost:3000/api/auth/login", {
                 method: "POST",
                 body: JSON.stringify({
-                    username: username,
+                    email   : email,
                     password: password
                 })
             })
@@ -35,7 +38,7 @@ export default {
                     return response.json();
                 }).then(data => {
                     context.commit("LOGIN",
-                        {username: username, token: data.token});
+                        {email: data.email, token: data.token, user_id: data.user_id});
                 }).catch(error => {
                     context.commit("LOGOUT");
                     throw error;
@@ -44,11 +47,11 @@ export default {
         async logout(context) {
             context.commit("LOGOUT");
         },
-        async signup(context, { username, password }) {
+        async signup(context, { email, password }) {
             return fetch("http://localhost:3000/api/auth/create-user", {
                 method: "POST",
                 body: JSON.stringify(
-                    { username: username, password: password })
+                    { email: email, password: password , nickname: "nick:" + new Date().getTime(), description: "des："+ new Date().getTime()})
             }).then(response => {
                 if (!response.ok) {
                     throw new Error("Cannot signup!");
@@ -56,7 +59,7 @@ export default {
                 return response.json();
             }).then(data => {
                 context.commit("LOGIN",
-                    { username: username, token: data.token });
+                    { email: email, token: data.token, });
             }).catch(error => {
                 context.commit("LOGOUT");
                 error.read().then((data, done) => {

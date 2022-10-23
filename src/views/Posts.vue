@@ -27,8 +27,9 @@ export default {
     addPost(text) {
       console.log("------$$$$$$$$####",this.$store.getters["auth/currentUser"].username);
       this.$store.dispatch("posts/addPost", {
-        username: this.$store.getters["auth/currentUser"].username,
-        post: text
+        title: "ts:" + new Date().getTime(),
+        author_id: this.$store.getters["auth/currentUser"].user_id,
+        content: text
       });
     }
   },

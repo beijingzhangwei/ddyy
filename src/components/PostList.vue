@@ -2,7 +2,7 @@
   <div>
     <h1>{{ title }}</h1>
     <div class="post-list" v-if="showPosts">
-      <single-post v-for="post in posts" :key="post.id" :post="post">
+      <single-post v-for="post in posts" :key="post.post_id" :post="post">
       </single-post>
     </div>
   </div>

@@ -1,3 +1,5 @@
+import user from "@/views/User";
+
 function getFormattedDate() {
     var d = new Date();
 
@@ -19,7 +21,8 @@ function getFormattedDate() {
 export default {
     namespaced: true,
     state: {
-        posts: []
+        posts: [],
+        one_user_posts: [],
     },
 
     mutations: {
@@ -29,12 +32,19 @@ export default {
         SET_ALL_POSTS(state, posts) {
             state.posts = posts;
         },
-        DELETE_POST(state, id) {
-            state.posts = state.posts.filter(post => post.id != id);
+        SET_ONE_USER_POSTS(state, posts) {
+            state.one_user_posts = posts;
+        },
+        DELETE_POST(state, post_id) {
+            state.posts = state.posts.filter(post => post.post_id != post_id);
         },
         SET_POST_COMMENTS(state, { postId, post }) {
-            const oldPost = state.posts.find(post => post.id == postId);
+            const oldPost = state.posts.find(post => post.post_id == postId);
             oldPost.comments = post.comments;
+        },
+        DELETE_COMMENT(state, { postId, comments }) {
+            const oldPost = state.posts.find(post => post.post_id == postId);
+            oldPost.comments = comments;
         },
     },
     actions: {
@@ -62,9 +72,10 @@ export default {
                 });
         },
         async deletePost(context, {post}) {
-            fetch("http://localhost:3000/api/posts/" + post.id, {
+            fetch("http://localhost:3000/api/posts/" + post.post_id, {
                 headers: {
                     "Content-Type": "application/json",
+                    // 鉴权请求需要携带token 去请求
                     Authorization: context.rootGetters["auth/getTokenHeader"]
                 },
                 method: "DELETE"
@@ -72,7 +83,7 @@ export default {
                 .then(response => {
                     if (response.ok) {
                         console.log(response);
-                        context.commit("DELETE_POST", post.id);
+                        context.commit("DELETE_POST", post.post_id);
                         return;
                     }
                     throw Error(response);
@@ -118,14 +129,61 @@ export default {
                 .catch(error => {
                     console.log(error);
                 });
+        },
+        async getAllPostsByUserId(context, {user_id}) {
+            fetch("http://localhost:3000/api/one_user_posts/" + user_id, {
+                method: "GET",
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw Error(response.body);
+                    }
+                })
+                .then(data => {
+                    console.log(data);
+                    context.commit("SET_ONE_USER_POSTS", data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
+        async deleteComment(context, {comment}) {
+            fetch("http://localhost:3000/api/comments/" + comment.comment_id + "/del", {
+                headers: {
+                    "Content-Type": "application/json",
+                    // 鉴权请求需要携带token 去请求
+                    Authorization: context.rootGetters["auth/getTokenHeader"]
+                },
+                method: "POST"
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    }
+                    throw Error(response);
+                })
+                .then(data => {
+                    console.log(data);
+                    context.commit("DELETE_COMMENT", { postId: comment.post_id, comments: data });
+                })
+                .catch(error => {
+                    console.log(error);
+                });
         }
     },
     getters: {
         allPosts(state) {
             return state.posts;
         },
-        userPosts: state => username => {
-            return state.posts.filter(post => post.username === username);
+        // 此处应该查询db
+        // userPosts: state => user_id => {
+        //     return state.posts.filter(post => post.post_author.user_id === user_id);
+        // }
+        // 有没有并发问题呢？
+        userPosts(state) {
+            return state.one_user_posts;
         }
     }
 };

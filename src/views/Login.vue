@@ -2,8 +2,8 @@
   <div class="content">
     <base-card>
       <form @submit.prevent>
-        <label for="username">Username</label>
-        <input id="username" type="text" v-model="username" />
+        <label for="Email">邮箱</label>
+        <input id="email" type="text" v-model="email" />
         <label for="password">Password</label>
         <input id="password" type="password" v-model="password" />
         <button @click="loginButtonClicked">{{ buttonString }}</button>
@@ -22,16 +22,17 @@ export default {
   data() {
     return {
       loginSelected: true,
-      username: "",
+      email: "",
       password: "",
-      error: ""
+      error: "",
+      user_id:"",
     };
   },
   methods: {
     ...mapActions({ login: "auth/login", signup: "auth/signup" }),
     loginButtonClicked() {
       if (this.loginSelected) {
-        this.login({ username: this.username, password: this.password })
+        this.login({ email: this.email, password: this.password })
             .then(() => {
               this.$router.push({ name: "Posts" });
             })
@@ -39,7 +40,7 @@ export default {
               this.error = error;
             });
       } else {
-        this.signup({ username: this.username, password: this.password })
+        this.signup({ email: this.email, password: this.password })
             .then(() => {
               this.$router.push({ name: "Posts" });
             })

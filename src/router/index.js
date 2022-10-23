@@ -12,7 +12,7 @@ const routes = [
         name: "Posts",
         component: Posts
     },{
-        path: "/user/:username",
+        path: "/user/:email",
         name: "User",
         component: User,
         props: true,
