@@ -42,7 +42,22 @@ export default {
                 return state.loadedUsers.find(user => user.email == email);
             } else {
                 //Here I'll have to request from the server!!
-                return {};
+                return fetch("https://ddyydy.tk/ddyy-b/api/user_by_email/" + email, {
+                    headers: {
+                        Authorization: context.rootGetters["auth/getTokenHeader"]
+                    }
+                })
+                    .then(response => {
+                        if (!response.ok) throw new Error("Cannot get user");
+                        return response.json();
+                    })
+                    .then(data => {
+                        context.commit("ADD_USER", data);
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        throw error;
+                    });
             }
         }
     }
