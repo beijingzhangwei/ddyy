@@ -6,6 +6,7 @@ export default {
             loggedIn: false,
             token: "",
             user_id: 0,
+            description:''
         }
     },
     mutations: {

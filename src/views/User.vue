@@ -20,8 +20,9 @@ export default {
       return this.$store.getters["posts/userPosts"];
     },
     user() {
-      console.log("-----###组件computed时（有缓存）-user###email==" + this.$store.getters["users/getUser"](this.email));
-      return this.$store.getters["users/getUser"](this.email);
+      console.log("-----###组件mounted时###-----user_id=" + this.$store.getters["auth/currentUser"].user_id);
+      console.log("-----###组件computed时（有缓存）-user###email==" + this.$store.getters["auth/currentUser"].email);
+      return this.$store.getters["auth/currentUser"]
     }
   },
   mounted() {

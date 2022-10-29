@@ -36,7 +36,7 @@ export default {
         }
     },
     getters: {
-        getUser: state => email => {
+        getUser: state => (context, {email}) => {
             if (state.loadedUsers.some(user => user.email == email)) {
                 console.log(state.loadedUsers.find(user => user.email == email));
                 return state.loadedUsers.find(user => user.email == email);
@@ -44,7 +44,7 @@ export default {
                 //Here I'll have to request from the server!!
                 return fetch("https://ddyydy.tk/ddyy-b/api/user_by_email/" + email, {
                     headers: {
-                        Authorization: context.rootGetters["auth/getTokenHeader"]
+                        // Authorization: context.rootGetters["auth/getTokenHeader"]
                     }
                 })
                     .then(response => {
