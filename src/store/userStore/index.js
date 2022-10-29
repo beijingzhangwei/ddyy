@@ -20,7 +20,8 @@ export default {
             return fetch("https://ddyydy.tk/ddyy-b/api/users/" + user_id, {
                 headers: {
                     Authorization: context.rootGetters["auth/getTokenHeader"]
-                }
+                },
+                method: "GET"
             })
                 .then(response => {
                     if (!response.ok) throw new Error("Cannot get user");
@@ -36,23 +37,21 @@ export default {
         }
     },
     getters: {
-        getUser: state => (context, {email}) => {
+        getUser: state => email => {
             if (state.loadedUsers.some(user => user.email == email)) {
                 console.log(state.loadedUsers.find(user => user.email == email));
                 return state.loadedUsers.find(user => user.email == email);
             } else {
                 //Here I'll have to request from the server!!
                 return fetch("https://ddyydy.tk/ddyy-b/api/user_by_email/" + email, {
-                    headers: {
-                        // Authorization: context.rootGetters["auth/getTokenHeader"]
-                    }
+                    method: "GET"
                 })
                     .then(response => {
                         if (!response.ok) throw new Error("Cannot get user");
                         return response.json();
                     })
                     .then(data => {
-                        context.commit("ADD_USER", data);
+                        // this.commit("ADD_USER", data);
                     })
                     .catch(error => {
                         console.log(error);

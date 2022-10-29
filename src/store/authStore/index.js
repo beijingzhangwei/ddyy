@@ -10,17 +10,19 @@ export default {
         }
     },
     mutations: {
-        LOGIN(state, { email, token , user_id}) {
+        LOGIN(state, { email, token , user_id, description}) {
             state.user.loggedIn = true;
             state.user.email = email;
             state.user.token = token;
             state.user.user_id = user_id;
+            state.user.description = description;
         },
         LOGOUT(state) {
             state.user.loggedIn = false;
             state.user.email = "";
             state.user.token = "";
             state.user.user_id = "";
+            state.user.description = '';
         }
     },
     actions: {
@@ -39,7 +41,7 @@ export default {
                     return response.json();
                 }).then(data => {
                     context.commit("LOGIN",
-                        {email: data.email, token: data.token, user_id: data.user_id});
+                        {email: data.email, token: data.token, user_id: data.user_id, description: data.description});
                 }).catch(error => {
                     context.commit("LOGOUT");
                     throw error;
@@ -60,7 +62,7 @@ export default {
                 return response.json();
             }).then(data => {
                 context.commit("LOGIN",
-                    { email: email, token: data.token, });
+                    { email: email, token: data.token, description: data.description});
             }).catch(error => {
                 context.commit("LOGOUT");
                 error.read().then((data, done) => {
