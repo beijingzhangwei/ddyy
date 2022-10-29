@@ -6,7 +6,8 @@
         <input id="email" type="text" v-model="email" />
         <label for="password">Password</label>
         <input id="password" type="password" v-model="password" />
-        <button @click="loginButtonClicked">{{ buttonString }}</button>
+        <hr/>
+        <button class="btn btn-success" @click="loginButtonClicked">{{ buttonString }}</button>
         <p v-if="error">{{ error }}</p>
         <a href="#" @click.prevent="toggleLogin">{{ textLoginString }}</a>
       </form>
@@ -75,10 +76,10 @@ export default {
 <style scoped>
 button {
   margin-top: 1rem;
-  width: 20rem;
-  height: 5rem;
+  width: 8rem;
+  height: 3rem;
   border-radius: 8px;
-  background-color: darksalmon;
+  /*background-color: darksalmon;*/
   padding: 8px;
 }
 </style>

@@ -8,7 +8,7 @@
     <button v-if="loggedIn && currentUser.email === post.post_author.email" class="delete-button"
             @click.prevent="deletePost">Delete</button>
   </template>
-  <div class="text-wrapper">Say：{{post.content }}</div>
+  <div id="sp" class="text-wrapper">Say：{{post.content }}</div>
   <template v-slot:footer>
     <base-card v-for="comment in post.comments" :key="comment.comment_id" :expandable="false">
       <template v-slot:header>
@@ -79,5 +79,12 @@ export default {
 <style>
 .text-wrapper {
   white-space: pre-wrap;
+}
+#sp{
+  background: url("../assets/bg.jpeg");
+  width: 100%;
+  height: 100%;
+  position: center;
+  background-size: 100% 100%;
 }
 </style>
