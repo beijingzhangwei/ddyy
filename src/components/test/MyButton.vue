@@ -119,7 +119,7 @@
   </div>
 
   <!--  form event v-for 综合 循环子组件-->
-  <div id="show_me:v-for-form-total" class="m-3 p-3 border border-success">
+  <div v-if="seen"  id="show_me:v-for-form-total" class="m-3 p-3 border border-success">
     <form v-on:submit.prevent="addNewTodo">
       <label for="new-todo">添加todo：</label>
       <input v-model="nextTodoText" id="new-todo" placeholder="例如：一起吃鸡"/>

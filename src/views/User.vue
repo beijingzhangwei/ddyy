@@ -30,9 +30,7 @@ export default {
     // 页面渲染出来以后调用
     this.$store.dispatch("users/addUserByEmail", {email: this.email});
     // 页面渲染出来以后调用 -- 页面数据存储
-    this.$store.dispatch("posts/getAllPostsByUserId", {
-      user_id: this.$store.getters["users/getUser"].user_id,
-    });
+    this.$store.dispatch("posts/getAllPostsByEmail",{email: this.email});
   }
 };
 </script>

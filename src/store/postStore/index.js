@@ -149,6 +149,25 @@ export default {
                     console.log(error);
                 });
         },
+        getAllPostsByEmail(context, {email}) {
+            fetch("https://ddyydy.tk/ddyy-b/api/one_user_posts_by_email/" + email, {
+                method: "GET",
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json();
+                    } else {
+                        throw Error(response.body);
+                    }
+                })
+                .then(data => {
+                    console.log(data);
+                    context.commit("SET_ONE_USER_POSTS", data);
+                })
+                .catch(error => {
+                    console.log(error);
+                });
+        },
         async deleteComment(context, {comment}) {
             fetch("https://ddyydy.tk/ddyy-b/api/comments/" + comment.comment_id + "/del", {
                 headers: {
