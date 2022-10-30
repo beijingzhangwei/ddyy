@@ -1,5 +1,5 @@
 <template>
-  <button v-if="seen" @click="increment" class="access_button" >
+  <button v-if="seen" @click="increment" class="access_button">
     <div id="bt" v-bind:title="message + ':你是第' +state.count+'位访问的幸运用户！！！'">
       鼠标放上有惊喜 <br/>
     </div>
@@ -12,7 +12,7 @@
     <button class="btn btn-success" v-on:click="reverseMessage">反转字符串</button>
   </div>
   <!--v-model 双向绑定-->
-  <div v-if="seen"  id="show_me:v-model" class="m-3 p-3 border border-success">
+  <div v-if="seen" id="show_me:v-model" class="m-3 p-3 border border-success">
     <h3>{{ message }}</h3>
     <input class="form-control" v-model="message"/>
   </div>
@@ -32,6 +32,7 @@
     </button>
     <hr>
     <ol>
+      <!--      li == list-->
       <li v-for="todo in todos" v-if="seen">
         {{ todo.content }}
       </li>
@@ -94,34 +95,91 @@
   <div id="show_me:watch" class="m-3 p-3 border border-success">
     <p>
       时间戳转换
-      <input v-model="question"  placeholder='秒级时间戳'/>  {{ answer }}
+      <input v-model="question" placeholder='秒级时间戳'/> {{ answer }}
     </p>
   </div>
 
-   <!--  继续学习 ToDo https://www.youtube.com/watch?v=DPmscg3Ggko&list=PLliocbKHJNwuozzzF3gWnRjVOrX1tA9k5&index=19-->
+  <!--  样式单绑定-->
+  <div v-if="seen" id="show_me:css-boot" class="m-3 p-3 border border-success">
+    <div class="text-danger border display-5">编译发布</div>
+    <hr>
+    <div :class="{'text-danger': isLoveCBA, 'birder': isLoveCBA, 'display-5':isLoveCBA}">我爱CBA</div>
+    <button @click="this.isLoveCBA=!this.isLoveCBA" class="btn btn-info">❤️CBA?</button>
+    <hr>
+    <div :class="cssCtrCBA">我爱CBA</div>
+    <button @click="this.cssCtrCBA=this.cssTitle" class="btn btn-info">❤️CBA!</button>
+    <div :style="cssNBAStyle">我爱BCC</div>
+  </div>
+  <!--  循环对象-->
+  <div v-if="seen" id="show_me:v-for-obj" class="m-3 p-3 border border-success">
+    <div class="text-danger border display-5">循环对象</div>
+    <ul>
+      <li v-for="(val, title, i) in game_sfv">{{i+1}}:{{title}}-->{{val}}</li>
+    </ul>
+  </div>
+
+  <!--  form event v-for 综合 循环子组件-->
+  <div id="show_me:v-for-form-total" class="m-3 p-3 border border-success">
+    <form v-on:submit.prevent="addNewTodo">
+      <label for="new-todo">添加todo：</label>
+      <input v-model="nextTodoText" id="new-todo" placeholder="例如：一起吃鸡"/>
+      <button>添加</button>
+    </form>
+    <hr/>
+    <ul class="p-3">
+      <!--      @remove="todos.splice(index,1) 接受子组件的事件并处-->
+      <todo-item v-for="(todo,index) in todos" :key="todo.id" :title="todo.content"
+                 @remove="todos.splice(index,1)"></todo-item>
+    </ul>
+  </div>
+
+  <!--  继续学习 ToDo https://www.youtube.com/watch?v=DPmscg3Ggko&list=PLliocbKHJNwuozzzF3gWnRjVOrX1tA9k5&index=19-->
 
 </template>
 
 <script>
 import {computed, reactive} from "vue"; // 交互 和 计算属性
+import TodoItem from "@/components/test/TodoItem";
 
 export default {
   name: "MyButton",
+  components: {TodoItem},
   data() {
     return {
       message: 'work hard, play hard!',
       seen: false,
+      nextTodoText: '',
       todos: [
-        {content: '睡觉'},
-        {content: '洗刷'},
-        {content: '吃饭'},
-        {content: '跑步'},
+        {content: '睡觉', id: 1},
+        {content: '洗刷', id: 2},
+        {content: '吃饭', id: 3},
+        {content: '跑步', id: 4},
       ],
+      nextTodoId: 4,
       rawHtml: '<b class=text-danger>恒大衰落了</b>',
       isDisabledButton: false,
       ddyy: 'https://ddyydy.tk',
       question: '',
       answer: '',
+      isLoveCBA: false,
+      cssCtrCBA: {},
+      cssTitle: {
+        'text-danger': true,
+        'border': true,
+        'display-5': true,
+      },
+      cssNBAStyle: {
+        color: 'red',
+        fontSize: '36px'
+      },
+      game_sfv: {
+        name: "Streat Fighter 5",
+        platform: "PS4",
+        developer: "Capcom",
+        release: "2019/09/01",
+        genre: "格斗",
+      },
+
     }
   },
   watch: {
@@ -160,6 +218,14 @@ export default {
     buyPS100(buy) {
       buy === 1 ? alert("买买买！！！") : alert("不买，不买，不买")
     },
+    addNewTodo(){
+      this.todos.push({
+        id: this.nextTodoId++,
+        content: this.nextTodoText
+      })
+      this.nextTodoText=''
+    }
+    ,
     timestampToTime(timestamp) {
       if (timestamp <= 2147483648) {
         timestamp = timestamp * 1000
