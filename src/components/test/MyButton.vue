@@ -98,6 +98,17 @@
       <input v-model="question" placeholder='秒级时间戳'/> {{ answer }}
     </p>
   </div>
+  <div id="show_me:reaPackage" class="m-3 p-3 border border-success">
+    <p>
+      随机红包数量
+      <input v-model="redSize" placeholder='红包数量'/>
+      随机红包金额
+      <input v-model="money" placeholder='红包大小'/>
+    </p>
+    <ul>
+      <li v-for="my in moneyList">{{ my.value }}</li>
+    </ul>
+  </div>
 
   <!--  样式单绑定-->
   <div v-if="seen" id="show_me:css-boot" class="m-3 p-3 border border-success">
@@ -140,6 +151,7 @@
 <script>
 import {computed, reactive} from "vue"; // 交互 和 计算属性
 import TodoItem from "@/components/test/TodoItem";
+import currency from "currency.js";
 
 export default {
   name: "MyButton",
@@ -179,13 +191,25 @@ export default {
         release: "2019/09/01",
         genre: "格斗",
       },
-
+      money: 0,
+      redSize: 0,
+      moneyList: [],
     }
   },
   watch: {
     question(newQuestion, oldQuestion) {
       if (newQuestion !== oldQuestion) {
         this.answer = this.timestampToTime(newQuestion)
+      }
+    },
+    money(newMoney, oldMoney) {
+      if (newMoney !== oldMoney) {
+        this.moneyList = this.getRandomMoney(newMoney)
+      }
+    },
+    redSize(newSize, oldSize) {
+      if (newSize !== oldSize) {
+        this.moneyList = this.getRandomMoney(this.money)
       }
     }
   }
@@ -217,6 +241,49 @@ export default {
     },
     buyPS100(buy) {
       buy === 1 ? alert("买买买！！！") : alert("不买，不买，不买")
+    },
+    getRandomMoney(newMoney){
+      let tmpRedSize = this.redSize;
+      const totalPeople = this.redSize;
+      let tmpNewMoney = newMoney;
+      const that = this
+      if (tmpRedSize === 0) {
+        return ''
+      }
+      const JPY = value => currency(value,{precision: 2, symbol:'￥'} )
+      that.moneyList = [{value:"结果"}]
+      let remainMoney = JPY(tmpNewMoney)
+      // console.log("还有几个红包啊",totalPeople);
+
+      if ('1' === totalPeople) {
+        // console.log("只有一个红包啊",totalPeople);
+        that.moneyList.push({value: JPY(remainMoney).format()})
+        return that.moneyList
+      }
+
+      for (let i = 0; i < totalPeople; i++) {
+
+        if (1 === totalPeople-i) {
+          console.log("last one",totalPeople);
+          that.moneyList.push({value: JPY(remainMoney).format()})
+          return that.moneyList
+        }
+
+        const random = Math.random()
+        const min = JPY(0.01)
+        const max = remainMoney.divide(tmpRedSize * 2)
+
+        let curMoney = max.multiply(random);
+        if (curMoney < min) {
+          curMoney = min
+        }
+        console.log("第", i, curMoney);
+
+        tmpRedSize--
+        remainMoney = remainMoney.subtract(curMoney)
+        that.moneyList.push({value: JPY(curMoney).format()})
+      }
+      return that.moneyList
     },
     addNewTodo(){
       this.todos.push({
