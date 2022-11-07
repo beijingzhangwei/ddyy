@@ -255,11 +255,12 @@ export default {
       that.moneyList = [{value:"结果"}]
       const min = JPY(0.01)
       if (JPY(newMoney) < min.multiply(tmpRedSize)) {
+        console.log("金额不足------",totalPeople);
         that.moneyList.push({value: "金额不足"})
+        return that.moneyList
       }
 
       let remainMoney = JPY(tmpNewMoney)
-      // console.log("还有几个红包啊",totalPeople);
 
       if ('1' === totalPeople) {
         // console.log("只有一个红包啊",totalPeople);
