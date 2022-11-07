@@ -247,7 +247,7 @@ export default {
       const totalPeople = this.redSize;
       let tmpNewMoney = newMoney;
       const that = this
-      if (tmpRedSize === 0) {
+      if (tmpRedSize === 0 || newMoney === '0' || newMoney === 0) {
         return ''
       }
       const JPY = value => currency(value,{precision: 2, symbol:'￥'} )
