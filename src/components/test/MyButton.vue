@@ -243,6 +243,8 @@ export default {
       buy === 1 ? alert("买买买！！！") : alert("不买，不买，不买")
     },
     getRandomMoney(newMoney){
+      const JPY = value => currency(value,{precision: 2, symbol:'￥'} )
+
       let tmpRedSize = this.redSize;
       const totalPeople = this.redSize;
       let tmpNewMoney = newMoney;
@@ -250,8 +252,12 @@ export default {
       if (tmpRedSize === 0 || newMoney === '0' || newMoney === 0) {
         return ''
       }
-      const JPY = value => currency(value,{precision: 2, symbol:'￥'} )
       that.moneyList = [{value:"结果"}]
+      const min = JPY(0.01)
+      if (JPY(newMoney) < min.multiply(tmpRedSize)) {
+        that.moneyList.push({value: "金额不足"})
+      }
+
       let remainMoney = JPY(tmpNewMoney)
       // console.log("还有几个红包啊",totalPeople);
 
@@ -270,7 +276,7 @@ export default {
         }
 
         const random = Math.random()
-        const min = JPY(0.01)
+
         const max = remainMoney.divide(tmpRedSize * 2)
 
         let curMoney = max.multiply(random);
