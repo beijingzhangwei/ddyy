@@ -103,7 +103,7 @@
     <h4>AI回答</h4>
     <div v-html="aiAnswer"></div>
   </div>
-  <div id="show_me:reaPackage" class="m-3 p-3 border border-success">
+  <div v-if="seen" id="show_me:reaPackage" class="m-3 p-3 border border-success">
     <p>
       随机红包数量
       <input v-model="redSize" placeholder='红包数量'/>
