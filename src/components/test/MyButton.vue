@@ -103,6 +103,16 @@
     <h4>AI回答</h4>
     <div v-html="aiAnswer"></div>
   </div>
+
+  <div class="m-3 p-3 border border-success">
+    <input  type="button" @click="lightSwitch"  value="卧室灯控开关">
+<!--    <img alt="light logo"  src="../../assets/close.jpeg">-->
+<!--    <img alt="light logo"  :src=this.imgList[imgIdx]>-->
+    <img v-if="imgIdx===0" alt="light logo"  src="../../assets/close.jpeg">
+    <img v-if="imgIdx===1" alt="light logo"  src="../../assets/open.jpeg">
+    <!--    src="../../assets/close.jpeg"-->
+  </div>
+
   <div v-if="seen" id="show_me:reaPackage" class="m-3 p-3 border border-success">
     <p>
       随机红包数量
@@ -163,6 +173,9 @@ export default {
   components: {TodoItem},
   data() {
     return {
+      imgList: ["../assets/close.jpeg", "../assets/open.jpeg"],
+      imgIdx: 0,
+      switchCount: 0,
       aikey: '',
       inputStr: '',
       aiAnswer: '',
@@ -227,43 +240,7 @@ export default {
       return this.todos.length
     }
   },
-  // setup() {
-  //   const inputStr = ref('');
-  //   let aiAnswer = ref('');
-  //
-  //   function showAnswer() {
-  //     // 模拟提交请求
-  //     postJson('https://ddyydy.tk/ddyy-b/ai/qa', inputStr).then(data => {
-  //       aiAnswer = data;
-  //     });
-  //   }
-  //   return {
-  //     inputStr,
-  //     aiAnswer,
-  //   }
-  // },
-  // setup() {
-  //   const state = reactive({ // 响应式函数
-  //         count: 0,                // 数值属性（初始化值）
-  //         double: computed(() => state.count * 2) // 计算属性 永远乘以2
-  //       }
-  //   );
-  //
-  //   function increment() {
-  //     state.count++;
-  //   }
-  //
-  //   return {
-  //     state,
-  //     increment // 返回，即可使用
-  //   };
-  // },
-  methods: {    // 函数，动态实时计算
-    // showKey() {
-    //   http.post("https://ddyydy.tk/ddyy-b/ai/qa",{param: this.inputStr}).then(res => {
-    //     this.aiAnswer = res.data;
-    //   });
-    // },
+  methods: {
     async showAnswer() {
       await this.showKey()
       const {Configuration, OpenAIApi} = require("openai");
@@ -277,6 +254,13 @@ export default {
         prompt: this.inputStr,
       });
       this.aiAnswer = completion.data.choices[0].text
+    },
+    async lightSwitch(){
+      const res = await fetch('https://ddyydy.tk/ddyy-b/switch_light', {
+        method: 'GET',
+      })
+      let switchData = await res.json()
+      this.imgIdx = parseInt(switchData.switchCount) % 2
     },
     async showKey() {
       // 使用 await / async 提交到服务器
