@@ -163,6 +163,7 @@ export default {
   components: {TodoItem},
   data() {
     return {
+      aikey: '',
       inputStr: '',
       aiAnswer: '',
       message: 'work hard, play hard!',
@@ -258,16 +259,17 @@ export default {
   //   };
   // },
   methods: {    // 函数，动态实时计算
-    // showAnswer () {
+    // showKey() {
     //   http.post("https://ddyydy.tk/ddyy-b/ai/qa",{param: this.inputStr}).then(res => {
     //     this.aiAnswer = res.data;
     //   });
     // },
     async showAnswer() {
+      await this.showKey()
       const {Configuration, OpenAIApi} = require("openai");
       const configuration = new Configuration({
         // apiKey: "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",
-        apiKey: "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",
+        apiKey: this.aikey,
       });
       const openai = new OpenAIApi(configuration);
       const completion = await openai.createCompletion({
@@ -277,7 +279,7 @@ export default {
       });
       this.aiAnswer = completion.data.choices[0].text
     },
-    async showAnswerFromServer() {
+    async showKey() {
       // 使用 await / async 提交到服务器
       const res = await fetch('https://ddyydy.tk/ddyy-b/ai/qa', {
         method: 'POST',
@@ -285,7 +287,7 @@ export default {
       })
       // 若服务器正常返回， result 为 true
       let aiData = await res.json()
-      this.aiAnswer = aiData.answer
+      this.aikey = aiData.answer
     },
     reverseMessage() {
       this.message = this.message.split('').reverse().join('')
