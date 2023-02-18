@@ -98,9 +98,9 @@
       <input v-model="question" placeholder='秒级时间戳'/> {{ answer }}
     </p>
     <h2>亲，请提交你的问题（等我回复可能需要1分钟左右...耐心等我）</h2>
-    <input type="text" v-model="inputStr">
-    <p><input type="button" value="提交" @click="showAnswer"></p>
-    <h2>AI回答</h2>
+    <input class="name" type="text" placeholder="请输入你想问AI的问题" v-model="inputStr">
+    <p><input  type="button" value="提交"   @click="showAnswer"></p>
+    <h4>AI回答</h4>
     <div v-html="aiAnswer"></div>
   </div>
   <div id="show_me:reaPackage" class="m-3 p-3 border border-success">
@@ -264,6 +264,20 @@ export default {
     //   });
     // },
     async showAnswer() {
+      const {Configuration, OpenAIApi} = require("openai");
+      const configuration = new Configuration({
+        // apiKey: "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",
+        apiKey: "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",
+      });
+      const openai = new OpenAIApi(configuration);
+      const completion = await openai.createCompletion({
+        model: "text-davinci-003",
+        max_tokens: 4000,
+        prompt: this.inputStr,
+      });
+      this.aiAnswer = completion.data.choices[0].text
+    },
+    async showAnswerFromServer() {
       // 使用 await / async 提交到服务器
       const res = await fetch('https://ddyydy.tk/ddyy-b/ai/qa', {
         method: 'POST',
@@ -377,4 +391,17 @@ export default {
   position: center;
   background-size: 100% 100%;
 }
+
+.name {
+  width: 800px;
+  height: 30px;
+  border: 1px solid #139be1;
+  border-radius: 5px;
+  color: blue;
+  font-size: 15px;
+  font-weight: bold;
+  background-color: #faf1d8;
+  text-indent: 10px;
+}
+
 </style>
