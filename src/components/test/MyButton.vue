@@ -97,6 +97,11 @@
       时间戳转换
       <input v-model="question" placeholder='秒级时间戳'/> {{ answer }}
     </p>
+    <h2>亲，请提交你的问题（等我回复可能需要1分钟左右...耐心等我）</h2>
+    <input type="text" v-model="inputStr">
+    <p><input type="button" value="提交" @click="showAnswer"></p>
+    <h2>AI回答</h2>
+    <div v-html="aiAnswer"></div>
   </div>
   <div id="show_me:reaPackage" class="m-3 p-3 border border-success">
     <p>
@@ -146,10 +151,10 @@
 
   <!--  继续学习 ToDo https://www.youtube.com/watch?v=DPmscg3Ggko&list=PLliocbKHJNwuozzzF3gWnRjVOrX1tA9k5&index=19-->
 
+
 </template>
 
 <script>
-import {computed, reactive} from "vue"; // 交互 和 计算属性
 import TodoItem from "@/components/test/TodoItem";
 import currency from "currency.js";
 
@@ -158,6 +163,8 @@ export default {
   components: {TodoItem},
   data() {
     return {
+      inputStr: '',
+      aiAnswer: '',
       message: 'work hard, play hard!',
       seen: false,
       nextTodoText: '',
@@ -219,23 +226,53 @@ export default {
       return this.todos.length
     }
   },
-  setup() {
-    const state = reactive({ // 响应式函数
-          count: 0,                // 数值属性（初始化值）
-          double: computed(() => state.count * 2) // 计算属性 永远乘以2
-        }
-    );
-
-    function increment() {
-      state.count++;
-    }
-
-    return {
-      state,
-      increment // 返回，即可使用
-    };
-  },
+  // setup() {
+  //   const inputStr = ref('');
+  //   let aiAnswer = ref('');
+  //
+  //   function showAnswer() {
+  //     // 模拟提交请求
+  //     postJson('https://ddyydy.tk/ddyy-b/ai/qa', inputStr).then(data => {
+  //       aiAnswer = data;
+  //     });
+  //   }
+  //   return {
+  //     inputStr,
+  //     aiAnswer,
+  //   }
+  // },
+  // setup() {
+  //   const state = reactive({ // 响应式函数
+  //         count: 0,                // 数值属性（初始化值）
+  //         double: computed(() => state.count * 2) // 计算属性 永远乘以2
+  //       }
+  //   );
+  //
+  //   function increment() {
+  //     state.count++;
+  //   }
+  //
+  //   return {
+  //     state,
+  //     increment // 返回，即可使用
+  //   };
+  // },
   methods: {    // 函数，动态实时计算
+    // showAnswer () {
+    //   http.post("https://ddyydy.tk/ddyy-b/ai/qa",{param: this.inputStr}).then(res => {
+    //     this.aiAnswer = res.data;
+    //   });
+    // },
+    async showAnswer() {
+      // 使用 await / async 提交到服务器
+      const res = await fetch('https://ddyydy.tk/ddyy-b/ai/qa', {
+        method: 'POST',
+        body: JSON.stringify({ ai_input: this.inputStr })
+      })
+      // 若服务器正常返回， result 为 true
+      let aiData = await res.json()
+      this.aiAnswer = aiData.answer
+    },
     reverseMessage() {
       this.message = this.message.split('').reverse().join('')
     },
@@ -298,7 +335,8 @@ export default {
         content: this.nextTodoText
       })
       this.nextTodoText=''
-    }
+    },
+  }
     ,
     timestampToTime(timestamp) {
       if (timestamp <= 2147483648) {
@@ -318,8 +356,7 @@ export default {
       let s = date.getSeconds();
       s = s < 10 ? ('0' + s) : s;
       return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
-    }
-  }
+    },
 };
 </script>
 
