@@ -268,7 +268,6 @@ export default {
       await this.showKey()
       const {Configuration, OpenAIApi} = require("openai");
       const configuration = new Configuration({
-        // apiKey: "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",
         apiKey: this.aikey,
       });
       const openai = new OpenAIApi(configuration);
