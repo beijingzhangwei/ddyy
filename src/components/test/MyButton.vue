@@ -155,7 +155,6 @@
 </template>
 
 <script>
-import currency from "currency.js";
 import TodoItem from "@/components/test/TodoItem";
 // import currency from "currency.js";
 
