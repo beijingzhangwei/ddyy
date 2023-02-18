@@ -155,8 +155,9 @@
 </template>
 
 <script>
-import TodoItem from "@/components/test/TodoItem";
 import currency from "currency.js";
+import TodoItem from "@/components/test/TodoItem";
+// import currency from "currency.js";
 
 export default {
   name: "MyButton",
