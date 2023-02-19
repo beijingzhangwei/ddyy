@@ -99,17 +99,22 @@
     </p>
     <h2>亲，请提交你的问题（等我回复可能需要1分钟左右...耐心等我）</h2>
     <input class="name" type="text" placeholder="请输入你想问AI的问题" v-model="inputStr">
-    <p><input  type="button" value="提交"   @click="showAnswer"></p>
+    <p><input type="button" value="提交" @click="showAnswer"></p>
     <h4>AI回答</h4>
-    <div v-html="aiAnswer"></div>
+    <div>
+<!--      cols="150" rows="20"-->
+      <textarea  :style="style" v-model="aiAnswer"/>
+<!--      <div>{{ output }}</div>-->
+    </div>
+
   </div>
 
   <div class="m-3 p-3 border border-success">
-    <input  type="button" @click="lightSwitch"  value="卧室灯控开关">
-<!--    <img alt="light logo"  src="../../assets/close.jpeg">-->
-<!--    <img alt="light logo"  :src=this.imgList[imgIdx]>-->
-    <img v-if="imgIdx===0" alt="light logo"  src="../../assets/close.jpeg">
-    <img v-if="imgIdx===1" alt="light logo"  src="../../assets/open.jpeg">
+    <input type="button" @click="lightSwitch" value="卧室灯控开关">
+    <!--    <img alt="light logo"  src="../../assets/close.jpeg">-->
+    <!--    <img alt="light logo"  :src=this.imgList[imgIdx]>-->
+    <img v-if="imgIdx===0" alt="light logo" src="../../assets/close.jpeg">
+    <img v-if="imgIdx===1" alt="light logo" src="../../assets/open.jpeg">
     <!--    src="../../assets/close.jpeg"-->
   </div>
 
@@ -140,12 +145,12 @@
   <div v-if="seen" id="show_me:v-for-obj" class="m-3 p-3 border border-success">
     <div class="text-danger border display-5">循环对象</div>
     <ul>
-      <li v-for="(val, title, i) in game_sfv">{{i+1}}:{{title}}-->{{val}}</li>
+      <li v-for="(val, title, i) in game_sfv">{{ i + 1 }}:{{ title }}-->{{ val }}</li>
     </ul>
   </div>
 
   <!--  form event v-for 综合 循环子组件-->
-  <div v-if="seen"  id="show_me:v-for-form-total" class="m-3 p-3 border border-success">
+  <div v-if="seen" id="show_me:v-for-form-total" class="m-3 p-3 border border-success">
     <form v-on:submit.prevent="addNewTodo">
       <label for="new-todo">添加todo：</label>
       <input v-model="nextTodoText" id="new-todo" placeholder="例如：一起吃鸡"/>
@@ -171,8 +176,15 @@ import TodoItem from "@/components/test/TodoItem";
 export default {
   name: "MyButton",
   components: {TodoItem},
+  refs: {
+    preCode: null
+  },
   data() {
     return {
+      style: {
+        width: '100%',
+        height: '50vh'
+      },
       imgList: ["../assets/close.jpeg", "../assets/open.jpeg"],
       imgIdx: 0,
       switchCount: 0,
@@ -238,7 +250,25 @@ export default {
   computed: {                     // 计算属性（谨慎使用，只是一个辅助工具，业务计算不要使用）  99.9%是只读的 对象属性cache住，作为对象的一个属性，缓存起来
     todayNeedTodosCount() {       // 函数类似
       return this.todos.length
-    }
+    },
+    // output() {
+    //   // 如果文本输入中检测到 JavaScript 代码片段，则对其进行格式化输出
+    //   if (/const|let|var|function/.test(this.aiAnswer)) {
+    //     let formatter = new Intl.NumberFormat("en-US", {
+    //       maximumFractionDigits: 2
+    //     });
+    //     // prettier-ignore
+    //     try {
+    //       let scriptString = this.aiAnswer;
+    //       return JSON.stringify(eval(scriptString), null, 2).replace(/\n/g, "<br>");
+    //     } catch (err) {
+    //       return err;
+    //     }
+    //   }
+    //   // 否则，将文字直接输出
+    //   else return this.aiAnswer;
+    // }
+
   },
   methods: {
     async showAnswer() {
@@ -255,7 +285,7 @@ export default {
       });
       this.aiAnswer = completion.data.choices[0].text
     },
-    async lightSwitch(){
+    async lightSwitch() {
       const res = await fetch('https://ddyydy.tk/ddyy-b/switch_light', {
         method: 'GET',
       })
@@ -266,7 +296,7 @@ export default {
       // 使用 await / async 提交到服务器
       const res = await fetch('https://ddyydy.tk/ddyy-b/ai/qa', {
         method: 'POST',
-        body: JSON.stringify({ ai_input: this.inputStr })
+        body: JSON.stringify({ai_input: this.inputStr})
       })
       // 若服务器正常返回， result 为 true
       let aiData = await res.json()
@@ -278,8 +308,8 @@ export default {
     buyPS100(buy) {
       buy === 1 ? alert("买买买！！！") : alert("不买，不买，不买")
     },
-    getRandomMoney(newMoney){
-      const JPY = value => currency(value,{precision: 2, symbol:'￥'} )
+    getRandomMoney(newMoney) {
+      const JPY = value => currency(value, {precision: 2, symbol: '￥'})
 
       let tmpRedSize = this.redSize;
       const totalPeople = this.redSize;
@@ -288,10 +318,10 @@ export default {
       if (tmpRedSize === 0 || newMoney === '0' || newMoney === 0) {
         return ''
       }
-      that.moneyList = [{value:"结果"}]
+      that.moneyList = [{value: "结果"}]
       const min = JPY(0.01)
       if (JPY(newMoney) < min.multiply(tmpRedSize)) {
-        console.log("金额不足------",totalPeople);
+        console.log("金额不足------", totalPeople);
         that.moneyList.push({value: "金额不足"})
         return that.moneyList
       }
@@ -306,8 +336,8 @@ export default {
 
       for (let i = 0; i < totalPeople; i++) {
 
-        if (1 === totalPeople-i) {
-          console.log("last one",totalPeople);
+        if (1 === totalPeople - i) {
+          console.log("last one", totalPeople);
           that.moneyList.push({value: JPY(remainMoney).format()})
           return that.moneyList
         }
@@ -328,34 +358,65 @@ export default {
       }
       return that.moneyList
     },
-    addNewTodo(){
+    addNewTodo() {
       this.todos.push({
         id: this.nextTodoId++,
         content: this.nextTodoText
       })
-      this.nextTodoText=''
+      this.nextTodoText = ''
     },
   }
-    ,
-    timestampToTime(timestamp) {
-      if (timestamp <= 2147483648) {
-        timestamp = timestamp * 1000
-      }
+  ,
+  timestampToTime(timestamp) {
+    if (timestamp <= 2147483648) {
+      timestamp = timestamp * 1000
+    }
 
-      var date = new Date(timestamp);
-      let y = date.getFullYear();
-      let MM = date.getMonth() + 1;
-      MM = MM < 10 ? ('0' + MM) : MM;
-      let d = date.getDate();
-      d = d < 10 ? ('0' + d) : d;
-      let h = date.getHours();
-      h = h < 10 ? ('0' + h) : h;
-      let m = date.getMinutes();
-      m = m < 10 ? ('0' + m) : m;
-      let s = date.getSeconds();
-      s = s < 10 ? ('0' + s) : s;
-      return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
-    },
+    var date = new Date(timestamp);
+    let y = date.getFullYear();
+    let MM = date.getMonth() + 1;
+    MM = MM < 10 ? ('0' + MM) : MM;
+    let d = date.getDate();
+    d = d < 10 ? ('0' + d) : d;
+    let h = date.getHours();
+    h = h < 10 ? ('0' + h) : h;
+    let m = date.getMinutes();
+    m = m < 10 ? ('0' + m) : m;
+    let s = date.getSeconds();
+    s = s < 10 ? ('0' + s) : s;
+    return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
+  },
+  /**
+   * 根据类型，标识对应的高亮样式
+   * @param {*} codeText
+   */
+  higlightCls(codeText) {
+    const codeTpl = codeText.trim()
+    let className = 'hljs'
+
+    if (codeTpl.indexOf('<') === 0) {
+      className = 'html xml'
+    } else if (codeTpl.indexOf('let') === 0) {
+      className = 'javascript'
+    } else if (codeTpl.indexOf('#include') === 0) {
+      className = 'cpp'
+    } else if (codeTpl.indexOf('func') === 0) {
+      className = 'go'
+    } else if (codeTpl.indexOf('def') === 0) {
+      className = 'python'
+    }
+    return className
+  },
+  /**
+   * 生成对应的高亮代码
+   */
+  createCode() {
+    if (!this.preCode) {
+      return
+    }
+    window.hljs.highlightBlock(this.preCode)
+  }
+
 };
 </script>
 
@@ -387,6 +448,12 @@ export default {
   font-weight: bold;
   background-color: #faf1d8;
   text-indent: 10px;
+}
+
+.hljs {
+  background: #fbfdbb;
+  padding: 0.5em;
+  font-size: 1.3em;
 }
 
 </style>
