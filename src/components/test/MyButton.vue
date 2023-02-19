@@ -439,7 +439,7 @@ export default {
 }
 
 .name {
-  width: 800px;
+  width: 100%;
   height: 30px;
   border: 1px solid #139be1;
   border-radius: 5px;
