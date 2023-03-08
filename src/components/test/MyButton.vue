@@ -1,4 +1,5 @@
 <template>
+  <div>我爱BCC</div>
   <button v-if="seen" @click="increment" class="access_button">
     <div id="bt" v-bind:title="message + ':你是第' +state.count+'位访问的幸运用户！！！'">
       鼠标放上有惊喜 <br/>
@@ -95,6 +96,7 @@
   <div id="show_me:watch" class="m-3 p-3 border border-success">
     <p>
       时间戳转换
+<!--      v-model:value= 为原始语法-->
       <input v-model="question" placeholder='秒级时间戳'/> {{ answer }}
     </p>
     <h2>亲，请提交你的问题（等我回复可能需要1分钟左右...耐心等我）</h2>
@@ -106,15 +108,15 @@
       <textarea  :style="style" v-model="aiAnswer"/>
 <!--      <div>{{ output }}</div>-->
     </div>
-
   </div>
 
   <div class="m-3 p-3 border border-success">
     <input type="button" @click="lightSwitch" value="卧室灯控开关">
     <!--    <img alt="light logo"  src="../../assets/close.jpeg">-->
-    <!--    <img alt="light logo"  :src=this.imgList[imgIdx]>-->
-    <img v-if="imgIdx===0" alt="light logo" src="../../assets/close.jpeg">
-    <img v-if="imgIdx===1" alt="light logo" src="../../assets/open.jpeg">
+<!--    命令插值语法-->
+        <img alt="light logo"  :src="imgList[imgIdx]">
+<!--    <img v-if="imgIdx===0" alt="light logo" src="../../assets/close.jpeg">-->
+<!--    <img v-if="imgIdx===1" alt="light logo" src="../../assets/open.jpeg">-->
     <!--    src="../../assets/close.jpeg"-->
   </div>
 
@@ -185,7 +187,7 @@ export default {
         width: '100%',
         height: '50vh'
       },
-      imgList: ["../assets/close.jpeg", "../assets/open.jpeg"],
+      imgList: ["./close.jpeg", "./open.jpeg"],
       imgIdx: 0,
       switchCount: 0,
       aikey: '',
@@ -227,6 +229,36 @@ export default {
       money: 0,
       redSize: 0,
       moneyList: [],
+      openMap: {
+        1: true
+      },
+      items: [{
+        id: 1,
+        name: '一级菜单1',
+        children: [{
+          id: 11,
+          name: '二级菜单1-1',
+        }, {
+          id: 12,
+          name: '二级菜单1-2',
+        },   {
+          id: 13,
+          name: '二级菜单1-3',
+        }],
+      }, {
+        id: 2,
+        name: '一级菜单2',
+        children: [{
+          id: 21,
+          name: '二级菜单2-1',
+        }, {
+          id: 22,
+          name: '二级菜单2-2',
+        },   {
+          id: 23,
+          name: '二级菜单2-3',
+        }],
+      }],
     }
   },
   watch: {
@@ -271,6 +303,7 @@ export default {
 
   },
   methods: {
+
     async showAnswer() {
       await this.showKey()
       const {Configuration, OpenAIApi} = require("openai");
@@ -415,8 +448,17 @@ export default {
       return
     }
     window.hljs.highlightBlock(this.preCode)
+  },
+  toggleChildren(item) {
+    if (this.isOpen(item)) {
+      this.$delete(this.openMap, item.id);
+    } else {
+      this.$set(this.openMap, item.id, true);
+    }
+  },
+  isOpen(item) {
+    return this.openMap[item.id];
   }
-
 };
 </script>
 

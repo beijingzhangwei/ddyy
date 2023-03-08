@@ -1,20 +1,23 @@
 <template>
   <div id="app">
     <my-button/>
+    <my-menu/>
     <hr>
-    <the-application-bar></the-application-bar>
-    <router-view class="content"/>
+<!--    <the-application-bar></the-application-bar>-->
+<!--    <router-view class="content"/>-->
   </div>
 </template>
-
+<!--接下来我们在主页的App.vue文件中完成路由加载操作：-->
 
 <script>
 import TheApplicationBar from "@/components/UI/TheApplicationBar";
 import MyButton from "@/components/test/MyButton"
+import MyMenu from "@/components/menu/MyMenu"
 export default {
   components: {
     TheApplicationBar,
-    MyButton
+    MyButton,
+    MyMenu
   }
 };
 </script>
