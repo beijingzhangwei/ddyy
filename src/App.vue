@@ -23,7 +23,7 @@
     <div class="container">
       <Category title="电影">
         <template v-slot:center class="foot">
-          <video controls src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4"></video>
+          <video controls src="../public/big_buck_bunny.mp4"></video>
         </template>
         <template v-slot:footer >
           <a  class="foot" href="https://ddyydy.tk">更多电影</a>
