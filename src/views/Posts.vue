@@ -12,7 +12,7 @@ import { mapGetters } from "vuex";
 import PostList from "@/components/PostList";
 import AddTextForm from "@/components/AddTextForm";
 export default {
-  name: "论坛多多",
+  name: "Posts",
   components: {
     PostList,
     AddTextForm
@@ -33,6 +33,7 @@ export default {
       });
     }
   },
+  // 挂在时初始化
   mounted() {
     this.$store.dispatch("posts/getAllPosts");
   }

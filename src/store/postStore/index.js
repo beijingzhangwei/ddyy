@@ -22,21 +22,27 @@ export default {
     namespaced: true,
     state: {
         posts: [],
+        my_posts:[],
         one_user_posts: [],
     },
 
     mutations: {
         ADD_POST(state, post) {
             state.posts.push(post);
+            state.my_posts.push(post);
         },
         SET_ALL_POSTS(state, posts) {
             state.posts = posts;
+        },
+        SET_MY_POSTS(state, posts) {
+            state.my_posts = posts;
         },
         SET_ONE_USER_POSTS(state, posts) {
             state.one_user_posts = posts;
         },
         DELETE_POST(state, post_id) {
             state.posts = state.posts.filter(post => post.post_id != post_id);
+            state.my_posts = state.my_posts.filter(post => post.post_id != post_id);
         },
         SET_POST_COMMENTS(state, { postId, post }) {
             const oldPost = state.posts.find(post => post.post_id == postId);
@@ -161,8 +167,12 @@ export default {
                     }
                 })
                 .then(data => {
-                    console.log(data);
-                    context.commit("SET_ONE_USER_POSTS", data);
+                    console.log("context############",context);
+                    if (context.rootGetters["auth/currentUser"].email === email){
+                        context.commit("SET_MY_POSTS", data);
+                    }else{
+                        context.commit("SET_ONE_USER_POSTS", data);
+                    }
                 })
                 .catch(error => {
                     console.log(error);
@@ -196,11 +206,9 @@ export default {
         allPosts(state) {
             return state.posts;
         },
-        // 此处应该查询db
-        // userPosts: state => user_id => {
-        //     return state.posts.filter(post => post.post_author.user_id === user_id);
-        // }
-        // 有没有并发问题呢？
+        myPosts(state){
+            return state.my_posts;
+        },
         userPosts(state) {
             return state.one_user_posts;
         }

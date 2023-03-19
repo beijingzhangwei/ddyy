@@ -11,7 +11,9 @@ const routes = [
         path: "/",
         name: "Posts",
         component: Posts
-    },{
+    },
+    {
+        // 占位符
         path: "/user/:email",
         name: "User",
         component: User,

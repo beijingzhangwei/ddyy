@@ -1,5 +1,4 @@
 <template>
-  <div>我爱BCC</div>
   <button v-if="seen" @click="increment" class="access_button">
     <div id="bt" v-bind:title="message + ':你是第' +state.count+'位访问的幸运用户！！！'">
       鼠标放上有惊喜 <br/>
@@ -93,11 +92,12 @@
   </div>
 
   <!--  检测属性变化-->
-  <div id="show_me:watch" class="m-3 p-3 border border-success">
+  <div id="show_me:watch" class="ai m-3 p-3 border border-success">
     <p>
-      时间戳转换
-<!--      v-model:value= 为原始语法-->
-      <input v-model="question" placeholder='秒级时间戳'/> {{ answer }}
+      时间戳转换(毫秒)
+      <input v-model.number="question" placeholder='时间戳'/> {{ answer }} <br/><br/>
+      时间戳转换(秒)
+      <input v-model.number="questionSecond" placeholder='时间戳'/> {{ answerSecond }}
     </p>
     <h2>亲，请提交你的问题（等我回复可能需要1分钟左右...耐心等我）</h2>
     <input class="name" type="text" placeholder="请输入你想问AI的问题" v-model="inputStr">
@@ -105,12 +105,12 @@
     <h4>AI回答</h4>
     <div>
 <!--      cols="150" rows="20"-->
-      <textarea  :style="style" v-model="aiAnswer"/>
+      <textarea class="aiCss"  v-model="aiAnswer"/>
 <!--      <div>{{ output }}</div>-->
     </div>
   </div>
 
-  <div class="m-3 p-3 border border-success">
+  <div class="lightSwitchCs" >
     <input type="button" @click="lightSwitch" value="卧室灯控开关">
     <!--    <img alt="light logo"  src="../../assets/close.jpeg">-->
 <!--    命令插值语法-->
@@ -173,7 +173,7 @@
 
 <script>
 import TodoItem from "@/components/test/TodoItem";
-// import currency from "currency.js";
+import day from "../../../js/day.js";
 
 export default {
   name: "MyButton",
@@ -183,6 +183,7 @@ export default {
   },
   data() {
     return {
+      answerSecond:'',
       style: {
         width: '100%',
         height: '50vh'
@@ -206,7 +207,8 @@ export default {
       rawHtml: '<b class=text-danger>恒大衰落了</b>',
       isDisabledButton: false,
       ddyy: 'https://ddyydy.tk',
-      question: '',
+      question: 0,
+      questionSecond:0,
       answer: '',
       isLoveCBA: false,
       cssCtrCBA: {},
@@ -262,6 +264,11 @@ export default {
     }
   },
   watch: {
+    questionSecond(newQuestion, oldQuestion) {
+      if (newQuestion !== oldQuestion) {
+        this.answerSecond = this.timestampToTime(newQuestion*1000)
+      }
+    },
     question(newQuestion, oldQuestion) {
       if (newQuestion !== oldQuestion) {
         this.answer = this.timestampToTime(newQuestion)
@@ -282,28 +289,12 @@ export default {
   computed: {                     // 计算属性（谨慎使用，只是一个辅助工具，业务计算不要使用）  99.9%是只读的 对象属性cache住，作为对象的一个属性，缓存起来
     todayNeedTodosCount() {       // 函数类似
       return this.todos.length
-    },
-    // output() {
-    //   // 如果文本输入中检测到 JavaScript 代码片段，则对其进行格式化输出
-    //   if (/const|let|var|function/.test(this.aiAnswer)) {
-    //     let formatter = new Intl.NumberFormat("en-US", {
-    //       maximumFractionDigits: 2
-    //     });
-    //     // prettier-ignore
-    //     try {
-    //       let scriptString = this.aiAnswer;
-    //       return JSON.stringify(eval(scriptString), null, 2).replace(/\n/g, "<br>");
-    //     } catch (err) {
-    //       return err;
-    //     }
-    //   }
-    //   // 否则，将文字直接输出
-    //   else return this.aiAnswer;
-    // }
-
+    }
   },
   methods: {
-
+    timestampToTime(timestamp) {
+      return day(timestamp).format('YYYY-MM-DD HH:mm:ss')
+    },
     async showAnswer() {
       await this.showKey()
       const {Configuration, OpenAIApi} = require("openai");
@@ -398,26 +389,6 @@ export default {
       })
       this.nextTodoText = ''
     },
-  }
-  ,
-  timestampToTime(timestamp) {
-    if (timestamp <= 2147483648) {
-      timestamp = timestamp * 1000
-    }
-
-    var date = new Date(timestamp);
-    let y = date.getFullYear();
-    let MM = date.getMonth() + 1;
-    MM = MM < 10 ? ('0' + MM) : MM;
-    let d = date.getDate();
-    d = d < 10 ? ('0' + d) : d;
-    let h = date.getHours();
-    h = h < 10 ? ('0' + h) : h;
-    let m = date.getMinutes();
-    m = m < 10 ? ('0' + m) : m;
-    let s = date.getSeconds();
-    s = s < 10 ? ('0' + s) : s;
-    return y + '-' + MM + '-' + d + ' ' + h + ':' + m + ':' + s;
   },
   /**
    * 根据类型，标识对应的高亮样式
@@ -472,6 +443,12 @@ export default {
   margin-top: 10px;
 }
 
+img{
+  width: 10%;
+  height: 20%;
+  object-fit: cover;
+}
+
 #bt {
   background: url("../../assets/bg.jpeg");
   width: 100%;
@@ -479,7 +456,19 @@ export default {
   position: center;
   background-size: 100% 100%;
 }
+.ai {
+  text-align: center;
+}
 
+.aiCss{
+  height: 100px;
+  width: 100%;
+  background-color: #fbfdbb;
+}
+
+.lightSwitchCs {
+  text-align: center;
+}
 .name {
   width: 100%;
   height: 30px;

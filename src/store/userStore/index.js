@@ -54,7 +54,7 @@ export default {
     },
     getters: {
         getUser: state => email => {
-            console.log("----qemailemailemailemailemailemailemailemailemailemailemail==" + email);
+            console.log("根据email查询用户信息：" + email);
             if (state.loadedUsers.some(user => user.email === email)) {
                 console.log(state.loadedUsers.find(user => user.email === email));
                 return state.loadedUsers.find(user => user.email === email);
