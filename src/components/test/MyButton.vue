@@ -183,6 +183,7 @@ export default {
   },
   data() {
     return {
+      Gif: null,
       answerSecond:'',
       style: {
         width: '100%',
@@ -284,8 +285,7 @@ export default {
         this.moneyList = this.getRandomMoney(this.money)
       }
     }
-  }
-  ,
+  },
   computed: {                     // 计算属性（谨慎使用，只是一个辅助工具，业务计算不要使用）  99.9%是只读的 对象属性cache住，作为对象的一个属性，缓存起来
     todayNeedTodosCount() {       // 函数类似
       return this.todos.length
@@ -486,5 +486,5 @@ img{
   padding: 0.5em;
   font-size: 1.3em;
 }
-
 </style>
+

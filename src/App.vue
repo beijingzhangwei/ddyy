@@ -18,9 +18,9 @@
     <!--    网络请求--------------------->
 
     <!--    插槽------------------------>
-    <hr>
-    <hr>
-    <div class="container">
+<!--    <hr>-->
+<!--    <hr>-->
+    <div  class="container">
       <Category title="电影">
         <template v-slot:center class="foot">
           <video controls src="../public/big_buck_bunny.mp4"></video>
@@ -62,6 +62,8 @@
 <!--      </Category>-->
 
     </div>
+    <Topology/>
+    <GifMake/>
 
     <!--    插槽------------------------>
 
@@ -95,10 +97,12 @@ import MyFooter from "@/components/todo/MyFooter"
 import MyListen from "@/components/todo/MyListen"
 import MovePic from "@/components/dynamicPic/MovePic"
 import MovePicV2 from "@/components/dynamicPic/MovePicV2"
+import GifMake from "@/components/dynamicPic/GifMake"
 import LightCtr from "@/components/webreq/LightCtr"
 import Search from "@/components/webreq/Search"
 import List from "@/components/webreq/List"
 import Category from "@/components/category/Category"
+import Topology from "@/components/topology/Topology"
 import {getCurrentInstance, provide, ref, watch, watchEffect} from "vue";
 
 export default {
@@ -116,7 +120,8 @@ export default {
     LightCtr,
     Search,
     List,
-    Category
+    Category,GifMake,
+    Topology
   },
   // 旧的 2.0 实现方式
   // data(){
