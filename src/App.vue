@@ -62,9 +62,6 @@
 <!--      </Category>-->
 
     </div>
-    <Topology/>
-    <GifMake/>
-
     <!--    插槽------------------------>
 
     <!--    <LightCtr/>-->
@@ -75,6 +72,10 @@
 
     <!--    <my-filter/>-->
     <my-button/>
+    <div style="display: flex;" >
+      <Topology/>
+    </div>
+    <GifMake/>
     <!--    <my-menu/>-->
     <!--    <my-form/>-->
     <hr>
