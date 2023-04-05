@@ -55,7 +55,7 @@ export default {
 
 <style scoped>
 .makeGif {
-  width: 30%;
-  height: 30%;
+  width: 10%;
+  height: 10%;
 }
 </style>
